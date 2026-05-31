@@ -84,18 +84,18 @@ dotcom = interpolate_monthly(dotcom_milestones)
 
 # ── 그림 그리기 ────────────────────────────────────────────────────────────
 fig = plt.figure(figsize=(16, 15))
-fig.suptitle("AI 버블인가? — 금리·인플레이션·밸류에이션 복합 분석",
+fig.suptitle("Is AI a Bubble? — Rates, Inflation & Valuation Analysis",
              fontsize=15, fontweight="bold", y=0.99)
 gs = gridspec.GridSpec(3, 2, figure=fig, hspace=0.5, wspace=0.3)
 
 # ─ ① 10년물 국채금리 ──────────────────────────────────────────────────────
 ax1 = fig.add_subplot(gs[0, 0])
 ax1.plot(tnx.index, tnx.values, color="#d32f2f", linewidth=2)
-ax1.axhline(2.0, color="gray",   linestyle="--", alpha=0.5, linewidth=1, label="2% 저금리선")
-ax1.axhline(4.0, color="#ff6f00", linestyle="--", alpha=0.7, linewidth=1, label="4% 고금리선")
+ax1.axhline(2.0, color="gray",   linestyle="--", alpha=0.5, linewidth=1, label="2% Low Rate")
+ax1.axhline(4.0, color="#ff6f00", linestyle="--", alpha=0.7, linewidth=1, label="4% High Rate")
 ax1.fill_between(tnx.index, tnx.values, 4.0,
                   where=(tnx.values >= 4.0), alpha=0.12, color="#d32f2f")
-ax1.set_title("① 미국 10년물 국채금리 (%)\n출처: FRED / 연준", fontweight="bold", fontsize=10)
+ax1.set_title("① US 10Y Treasury Yield (%)\nSource: FRED / Federal Reserve", fontweight="bold", fontsize=10)
 ax1.set_ylabel("%")
 ax1.legend(fontsize=8)
 ax1.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
@@ -107,9 +107,9 @@ ax2 = fig.add_subplot(gs[0, 1])
 ax2.bar(cpi.index, cpi.values, width=25,
         color=["#d32f2f" if v >= 5 else "#ff6f00" if v >= 3 else "#66bb6a"
                for v in cpi.values], alpha=0.8)
-ax2.axhline(2.0, color="gray", linestyle="--", alpha=0.6, linewidth=1.5, label="연준 목표 2%")
-ax2.axhline(5.0, color="#d32f2f", linestyle=":", alpha=0.6, linewidth=1.5, label="5% 고인플레이션")
-ax2.set_title("② CPI 인플레이션 (전년동월비 %)\n출처: BLS (미국 노동통계국)", fontweight="bold", fontsize=10)
+ax2.axhline(2.0, color="gray", linestyle="--", alpha=0.6, linewidth=1.5, label="Fed Target 2%")
+ax2.axhline(5.0, color="#d32f2f", linestyle=":", alpha=0.6, linewidth=1.5, label="5% High Inflation")
+ax2.set_title("② CPI Inflation (YoY %)\nSource: BLS (Bureau of Labor Statistics)", fontweight="bold", fontsize=10)
 ax2.set_ylabel("%")
 ax2.legend(fontsize=8)
 ax2.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
@@ -118,20 +118,20 @@ ax2.grid(alpha=0.3, axis="y")
 # ─ ③ AI 대표주 vs 나스닥 ─────────────────────────────────────────────────
 ax3 = fig.add_subplot(gs[1, :])
 style = {
-    "NVDA":  ("#76b900", 3.0, "엔비디아 (NVDA)"),
-    "MSFT":  ("#00a4ef", 1.8, "마이크로소프트 (MSFT)"),
-    "GOOGL": ("#fbbc04", 1.8, "구글 (GOOGL)"),
-    "QQQ":   ("#d32f2f", 1.8, "나스닥100 ETF (QQQ)"),
+    "NVDA":  ("#76b900", 3.0, "NVIDIA (NVDA)"),
+    "MSFT":  ("#00a4ef", 1.8, "Microsoft (MSFT)"),
+    "GOOGL": ("#fbbc04", 1.8, "Google (GOOGL)"),
+    "QQQ":   ("#d32f2f", 1.8, "Nasdaq100 ETF (QQQ)"),
 }
 for ticker, (color, lw, label) in style.items():
     ax3.plot(prices.index, prices[ticker], color=color, linewidth=lw, label=label)
 
 # 주요 이벤트 마킹
 events = {
-    "2020-03": ("코로나\n쇼크",    "down"),
-    "2022-01": ("연준 금리\n인상 시작", "down"),
-    "2023-01": ("ChatGPT\n열풍",   "up"),
-    "2025-01": ("현재",           "up"),
+    "2020-03": ("COVID\nCrash",      "down"),
+    "2022-01": ("Fed Rate\nHike",    "down"),
+    "2023-01": ("ChatGPT\nBoom",     "up"),
+    "2025-01": ("Now",               "up"),
 }
 for date, (label, direction) in events.items():
     x = pd.to_datetime(date)
@@ -143,9 +143,9 @@ for date, (label, direction) in events.items():
                      arrowprops=dict(arrowstyle="->", color="#555555", lw=0.8))
 
 ax3.axhline(100, color="gray", linestyle="--", alpha=0.4)
-ax3.set_title("③ AI 대표주 vs 나스닥 — 2020년 1월 기준 정규화 (=100)\n출처: Yahoo Finance",
+ax3.set_title("③ AI Stocks vs Nasdaq — Normalized from Jan 2020 (=100)\nSource: Yahoo Finance",
               fontweight="bold", fontsize=10)
-ax3.set_ylabel("정규화 지수")
+ax3.set_ylabel("Normalized Index")
 ax3.legend(fontsize=9, loc="upper left")
 ax3.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
 ax3.grid(alpha=0.3)
@@ -157,19 +157,20 @@ y_vals = prices["NVDA"].values
 colors_scatter = np.arange(len(x_vals))
 sc = ax4.scatter(x_vals, y_vals, c=colors_scatter, cmap="RdYlGn_r", alpha=0.5, s=20)
 cbar = plt.colorbar(sc, ax=ax4)
-cbar.set_label("시간 흐름 (초록=2020, 빨강=2025)", fontsize=7)
+cbar.set_label("Time (green=2020, red=2025)", fontsize=7)
 
 # 선형회귀선
 mask = ~(np.isnan(x_vals) | np.isnan(y_vals))
 if mask.sum() > 2:
     m, b = np.polyfit(x_vals[mask], y_vals[mask], 1)
     x_line = np.linspace(x_vals[mask].min(), x_vals[mask].max(), 100)
-    ax4.plot(x_line, m * x_line + b, "k--", linewidth=1.2, alpha=0.6, label="추세선")
+    ax4.plot(x_line, m * x_line + b, "k--", linewidth=1.2, alpha=0.6, label="Trend")
     corr = np.corrcoef(x_vals[mask], y_vals[mask])[0, 1]
-    ax4.set_title(f"④ 10년물 금리 vs NVDA 주가\n상관계수: {corr:.3f}  ({'역상관 — 디커플링!' if corr < -0.3 else '양상관' if corr > 0.3 else '무상관'})",
+    signal = "Decoupling!" if corr < -0.3 else "Positive Corr" if corr > 0.3 else "No Corr"
+    ax4.set_title(f"④ 10Y Yield vs NVDA Price\nCorrelation: {corr:.3f}  ({signal})",
                   fontweight="bold", fontsize=10)
-ax4.set_xlabel("10년물 금리 (%)")
-ax4.set_ylabel("NVDA 정규화 지수")
+ax4.set_xlabel("10Y Treasury Yield (%)")
+ax4.set_ylabel("NVDA Normalized Index")
 ax4.legend(fontsize=8)
 ax4.grid(alpha=0.3)
 
@@ -179,21 +180,20 @@ qqq_norm = prices["QQQ"].reset_index(drop=True)
 dotcom_norm = dotcom.reset_index(drop=True)
 
 ax5.plot(dotcom_norm.index, dotcom_norm.values, color="#ff6f00",
-         linewidth=2, label="닷컴버블 나스닥 (1998~2003)", linestyle="--")
+         linewidth=2, label="Dot-com Nasdaq (1998~2003)", linestyle="--")
 ax5.plot(qqq_norm.index[:len(dotcom_norm)], qqq_norm.values[:len(dotcom_norm)],
-         color="#1565c0", linewidth=2, label=f"현재 나스닥100 (2020~)")
+         color="#1565c0", linewidth=2, label="Current Nasdaq100 (2020~)")
 
-# 닷컴 고점 표시
 peak_idx = int(dotcom_norm.idxmax())
 ax5.axvline(peak_idx, color="#ff6f00", linestyle=":", alpha=0.5)
-ax5.annotate("닷컴 고점\n(2000-03)", xy=(peak_idx, dotcom_norm.max()),
+ax5.annotate("Dot-com Peak\n(Mar 2000)", xy=(peak_idx, dotcom_norm.max()),
              ha="center", fontsize=8, color="#ff6f00")
 
 ax5.axhline(100, color="gray", linestyle="--", alpha=0.4)
-ax5.set_title("⑤ 닷컴버블 vs 현재 나스닥\n(각 시작점 = 100, 경과 월 기준)",
+ax5.set_title("⑤ Dot-com Bubble vs Current Nasdaq\n(Start = 100, by months elapsed)",
               fontweight="bold", fontsize=10)
-ax5.set_xlabel("경과 월수")
-ax5.set_ylabel("정규화 지수")
+ax5.set_xlabel("Months Elapsed")
+ax5.set_ylabel("Normalized Index")
 ax5.legend(fontsize=9)
 ax5.grid(alpha=0.3)
 
