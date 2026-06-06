@@ -1,4 +1,5 @@
-import 'dotenv/config'
+import dotenv from 'dotenv'
+dotenv.config({ path: '.env.local' })
 
 process.env.DB_PATH = process.env.DB_PATH || './data/trendsensor.db'
 
