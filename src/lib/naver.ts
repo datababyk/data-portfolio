@@ -12,6 +12,7 @@ function getNaverHeaders(): HeadersInit {
     'X-Naver-Client-Id': clientId,
     'X-Naver-Client-Secret': clientSecret,
     'Content-Type': 'application/json',
+    'Referer': 'http://localhost',
   }
 }
 
