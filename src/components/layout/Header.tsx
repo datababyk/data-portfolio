@@ -8,9 +8,14 @@ interface HeaderProps {
   weekRange: string
 }
 
+const TABS = [
+  { href: '/korean', label: '🇰🇷 네이버' },
+  { href: '/foreign', label: '🌍 외국인' },
+  { href: '/google', label: '🔍 구글' },
+]
+
 export default function Header({ currentWeekLabel, weekRange }: HeaderProps) {
   const pathname = usePathname()
-  const isKorean = pathname === '/korean'
 
   return (
     <header className="sticky top-0 z-50 border-b" style={{ backgroundColor: 'var(--bg-secondary)', borderColor: 'var(--border)' }}>
@@ -25,28 +30,21 @@ export default function Header({ currentWeekLabel, weekRange }: HeaderProps) {
         </div>
 
         <nav className="flex items-center gap-1 p-1 rounded-xl" style={{ backgroundColor: 'var(--bg-card)' }}>
-          <Link
-            href="/korean"
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-              isKorean
-                ? 'text-white shadow-sm'
-                : 'hover:opacity-80'
-            }`}
-            style={isKorean ? { backgroundColor: '#4f46e5' } : { color: 'var(--text-secondary)' }}
-          >
-            🇰🇷 한국인
-          </Link>
-          <Link
-            href="/foreign"
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-              !isKorean
-                ? 'text-white shadow-sm'
-                : 'hover:opacity-80'
-            }`}
-            style={!isKorean ? { backgroundColor: '#4f46e5' } : { color: 'var(--text-secondary)' }}
-          >
-            🌍 외국인
-          </Link>
+          {TABS.map((tab) => {
+            const isActive = pathname === tab.href
+            return (
+              <Link
+                key={tab.href}
+                href={tab.href}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  isActive ? 'text-white shadow-sm' : 'hover:opacity-80'
+                }`}
+                style={isActive ? { backgroundColor: '#4f46e5' } : { color: 'var(--text-secondary)' }}
+              >
+                {tab.label}
+              </Link>
+            )
+          })}
         </nav>
       </div>
     </header>

@@ -1,5 +1,5 @@
 export type TrendLabel = 'rising' | 'fading' | 'new_entry' | 'exited' | 'stable'
-export type TrendView = 'korean' | 'foreign'
+export type TrendView = 'korean' | 'foreign' | 'google'
 
 export interface TrendHistoryPoint {
   week: string

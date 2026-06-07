@@ -10,7 +10,7 @@ import type { TrendsApiResponse, TrendSummary } from '@/types/trend'
 import { formatWeekRange } from '@/lib/weekUtils'
 
 interface TrendGridProps {
-  view: 'korean' | 'foreign'
+  view: 'korean' | 'foreign' | 'google'
   initialWeek?: string
 }
 

@@ -28,7 +28,7 @@ function initSchema(db: Database.Database): void {
     CREATE TABLE IF NOT EXISTS keywords (
       id          INTEGER PRIMARY KEY AUTOINCREMENT,
       term        TEXT    NOT NULL UNIQUE,
-      view        TEXT    NOT NULL CHECK(view IN ('korean','foreign')),
+      view        TEXT    NOT NULL CHECK(view IN ('korean','foreign','google')),
       first_seen  TEXT    NOT NULL,
       is_active   INTEGER NOT NULL DEFAULT 1
     );

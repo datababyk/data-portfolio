@@ -60,6 +60,12 @@ async function main() {
   const foreignLabeled = computeAndStoreTrendLabels(thisWeek, 'foreign')
   console.log(`  Computed labels for ${foreignLabeled} Foreign keywords`)
 
+  // ===== GOOGLE VIEW =====
+  console.log('\n[Google] Collecting Google Trends (this may take a few minutes)...')
+  const { collectAndStoreGoogleTrends } = await import('../src/lib/pipeline/discoverGoogle')
+  const googleLabeled = await collectAndStoreGoogleTrends(thisWeek, lastWeek)
+  console.log(`  Computed labels for ${googleLabeled} Google keywords`)
+
   // Summary
   const db = getDb()
   const snapCount = (db.prepare('SELECT COUNT(*) as cnt FROM weekly_snapshots').get() as { cnt: number }).cnt

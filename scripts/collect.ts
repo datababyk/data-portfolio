@@ -39,6 +39,12 @@ async function main() {
   const foreignLabeled = computeAndStoreTrendLabels(thisWeek, 'foreign')
   console.log(`  Foreign: ${foreignLabeled} keywords labeled`)
 
+  // Google
+  console.log('\n[Google] Collecting Google Trends...')
+  const { collectAndStoreGoogleTrends } = await import('../src/lib/pipeline/discoverGoogle')
+  const googleLabeled = await collectAndStoreGoogleTrends(thisWeek, lastWeek)
+  console.log(`  Google: ${googleLabeled} keywords labeled`)
+
   console.log('\nCollection complete.')
 }
 
